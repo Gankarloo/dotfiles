@@ -1,3 +1,9 @@
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 # Source ble.sh if installed
 if [ -f ~/.local/share/blesh/ble.sh ]; then
     # ble.sh @ Top of file
@@ -5,26 +11,30 @@ if [ -f ~/.local/share/blesh/ble.sh ]; then
     [[ $- == *i* ]] && source ~/.local/share/blesh/ble.sh --noattach
 fi
 
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+# User specific environment
+if ! [[ $PATH =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# Default editor
+EDITOR=vim
+export EDITOR
 
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -47,9 +57,26 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+if [ $(command -v eza) ]; then
+    alias ll='eza -l -a --icons=auto --group-directories-first'
+    alias l.='eza -d .*'
+    alias ls='eza'
+    alias l1='eza -1'
+else
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+fi
+# ugrep
+if [ $(command -v ugrep) ]; then
+    alias grep='ug'
+    alias egrep='ug -E'
+    alias fgrep='ug -F'
+    alias xzgrep='ug -z'
+    alias xzegrep='ug -zE'
+    alias xzfgrep='ug -zF'
+fi
+# other aliases
 alias usystemctl=' systemctl --user'
 alias fromjson='echo "$(</dev/stdin)" | jq "fromjson"'
 
@@ -71,7 +98,6 @@ if ! shopt -oq posix; then
     . ~/.bash_completion
   fi
 fi
-export EDITOR=vim
 
 # WSL specifics...
 if [[ $(systemd-detect-virt) == "wsl" ]]; then
@@ -89,23 +115,18 @@ if [[ -d ${HOME}/bin ]]; then
     export PATH="${HOME}/bin:${PATH}"
 fi
 
-# Starship
-if type -p starship >/dev/null; then
-    eval "$(starship init bash)"
-fi
-
-# Atuin
-if type -p atuin >/dev/null; then
-    . "$HOME/.atuin/bin/env"
-    eval "$(atuin init bash --disable-up-arrow)"
-fi
-
 # Brew
-BREWBIN='/home/linuxbrew/.linuxbrew/bin/brew'
+HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/home/linuxbrew/.linuxbrew}"
+BREWBIN="${HOMEBREW_PREFIX}/bin/brew"
 if [[ -x $(realpath $BREWBIN) ]]; then
-    #eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     eval "$($BREWBIN shellenv)"
 fi
+
+# Starship
+[ "$(command -v starship)" ] && eval "$(starship init bash)"
+
+# Atuin
+[ "$(command -v atuin)" ] && eval "$(atuin init bash --disable-up-arrow)"
 
 # Attach ble if sourced.
 if [ $HAS_BLESH ]; then
