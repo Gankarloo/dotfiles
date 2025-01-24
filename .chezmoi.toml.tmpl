@@ -1,7 +1,27 @@
+{{ $email := promptString "email" }}
+{{ $name := promptString "name" }}
+{{ $domain := promptString "Work Domain" }}
+
 {{- $osid := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
+{{- $atWork := false -}}
+{{- if (or (contains $domain .chezmoi.fqdnHostname) (contains $domain (.chezmoi.username | lower))) -}}
+{{-   $atWork = true -}}
+{{- end -}}
+
+{{- $wsl := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if or (eq (output "systemd-detect-virt" | trim) "wsl") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-     $wsl = true -}}
+{{-   end -}}
+{{- end -}}
+
 [data]
     osid = {{ $osid | quote }}
+    atWork = {{ $atWork }}
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+    isWSL = {{ $wsl }}
