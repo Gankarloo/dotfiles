@@ -1,6 +1,6 @@
 [user]
-    email = {{ .email | quote }}
-    name = {{ .name | quote }}
+	email = {{ .email | quote }}
+	name = {{ .name | quote }}
 [pull]
 	ff = only
 [core]
@@ -16,10 +16,10 @@
 [credential]
 {{- if eq .osid "windows" }}
 	helper = manager
-{{- else }}
-  {{- if .isWSL }}
- 	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
-  {{- end }}
+{{- else if .isWSL }}
+	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+{{- else if eq .chezmoi.os "linux" }}
+	helper = libsecret
 {{- end }}
 [alias]
 	oldest-ancestor = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-main}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
