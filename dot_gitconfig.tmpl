@@ -1,0 +1,27 @@
+[user]
+    email = {{ .email | quote }}
+    name = {{ .name | quote }}
+[pull]
+	ff = only
+[core]
+	autocrlf = false
+[init]
+	defaultBranch = main
+{{- if eq .atWork true }}
+[credential "https://int01.tfs.cgi.com"]
+	provider = generic
+[credential "int01.tfs.cgi.com"]
+	allowwindowsauth = false
+{{- end }}
+[credential]
+{{- if eq .osid "windows" }}
+	helper = manager
+{{- else }}
+  {{- if .isWSL }}
+ 	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+  {{- end }}
+{{- end }}
+[alias]
+	oldest-ancestor = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-main}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
+	branchdiff = !bash -c "git diff $(git oldest-ancestor).."
+	branchlog = !bash -c "git log $(git oldest-ancestor).."
