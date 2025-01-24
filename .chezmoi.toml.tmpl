@@ -14,7 +14,7 @@
 
 {{- $wsl := false -}}
 {{- if eq .chezmoi.os "linux" -}}
-{{-   if or (eq (output "systemd-detect-virt" | trim) "wsl") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-   if or (.chezmoi.kernel.osrelease | lower | contains "microsoft") (eq (output "bash" "-c" "echo $(systemd-detect-virt || :)" | trim) "wsl") -}}
 {{-     $wsl = true -}}
 {{-   end -}}
 {{- end -}}
