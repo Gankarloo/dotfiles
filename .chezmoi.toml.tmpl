@@ -1,15 +1,25 @@
-{{ $email := promptString "email" }}
-{{ $name := promptString "name" }}
-{{ $domain := promptString "Work Domain" }}
+{{ $remotecontainer := env "REMOTE_CONTAINERS" | not | not -}}
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+{{/* 
+    If running inside a remote_container, these are the assumptions
+    - Skip gitconfig as that is copied by vscode from host into container.
+*/}}
+{{- $name   := "" -}}
+{{- $email  := "" -}}
+{{- $atWork := false -}}
+{{- if $remotecontainer -}}
+{{-   $email = output "git" "config" "get" "user.email" | trim -}}
+{{-   $name = output "git" "config" "get" "user.name" | trim -}}
+{{-   $atWork = false -}}
+{{- else -}}
+{{-    $email = promptString "email" "gankarloo@gmail.com" -}}
+{{-    $name = promptString "name" "Gustaf Ankarloo" -}}
+{{-    $atWork = promptBool "is at work?" false -}}
+{{- end -}}
 
 {{- $osid := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
-{{- end -}}
-
-{{- $atWork := false -}}
-{{- if (or (contains $domain .chezmoi.fqdnHostname) (contains $domain (.chezmoi.username | lower))) -}}
-{{-   $atWork = true -}}
 {{- end -}}
 
 {{- $wsl := false -}}
@@ -25,3 +35,4 @@
     email = {{ $email | quote }}
     name = {{ $name | quote }}
     isWSL = {{ $wsl }}
+    remoteContainer = {{ $remotecontainer }}
