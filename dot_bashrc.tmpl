@@ -118,7 +118,7 @@ fi
 # Brew
 HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/home/linuxbrew/.linuxbrew}"
 BREWBIN="${HOMEBREW_PREFIX}/bin/brew"
-if [[ -x $(realpath $BREWBIN) ]]; then
+if [[ -e $BREWBIN ]] && [[ -x $(realpath $BREWBIN) ]]; then
     eval "$($BREWBIN shellenv)"
 fi
 
