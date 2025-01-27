@@ -1,0 +1,29 @@
+{{- if .remoteContainer -}}
+#!/bin/env bash
+
+if [ "$(command -v app)" ]; then
+    bash <(curl -sL https://hkdb.github.io/app/getapp.sh)
+fi
+
+# Starship
+if [ ! $(command -v starship) ]; then
+    curl -LsSf https://starship.rs/install.sh | sh
+fi
+
+# Atuin
+if [ ! $(command -v atuin) ]; then
+    curl -LsSf  https://setup.atuin.sh | sh
+fi
+
+# Ble.sh
+if [ ! $(command -v ble) ]; then
+    # Download nightly
+    curl -LO https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz
+    # Unpack
+    tar xJf ble-nightly.tar.xz
+    # Install
+    bash ble-nightly/ble.sh --install ~/.local/share
+fi
+
+env | sort
+{{- end -}}
