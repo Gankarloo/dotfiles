@@ -1,18 +1,23 @@
 {{- if .remoteContainer -}}
 #!/bin/env bash
 
+set -eu
+
 if [ "$(command -v app)" ]; then
     bash <(curl -sL https://hkdb.github.io/app/getapp.sh)
 fi
 
 # Starship
 if [ ! $(command -v starship) ]; then
-    curl -LsSf https://starship.rs/install.sh | sh
+    sh <(curl -LsSf https://starship.rs/install.sh) --bin-dir $HOME/.local/bin --yes
 fi
 
 # Atuin
 if [ ! $(command -v atuin) ]; then
-    curl -LsSf  https://setup.atuin.sh | sh
+    ATUIN_UNMANAGED_INSTALL="$HOME/.local/bin"
+    export ATUIN_UNMANAGED_INSTALL
+    sh <(curl -LsSf  https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh)
+    unset ATUIN_UNMANAGED_INSTALL
 fi
 
 # Ble.sh
@@ -24,6 +29,4 @@ if [ ! $(command -v ble) ]; then
     # Install
     bash ble-nightly/ble.sh --install ~/.local/share
 fi
-
-env | sort
 {{- end -}}
