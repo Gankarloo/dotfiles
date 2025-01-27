@@ -99,16 +99,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
+{{- if .isWSL }}
 # WSL specifics...
-if [[ $(systemd-detect-virt) == "wsl" ]]; then
-    # Enable integration to windows ssh agent
-    export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
-    ss -a | grep -q $SSH_AUTH_SOCK
-    if [ $? -ne 0 ]; then
-        rm -f $SSH_AUTH_SOCK
-        ( setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"$HOME/winhome/.wsl/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork & ) > /dev/null 2>&1
-    fi	
-fi
+# Enable integration to windows ssh agent
+export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+ss -a | grep -q $SSH_AUTH_SOCK
+if [ $? -ne 0 ]; then
+    rm -f $SSH_AUTH_SOCK
+    ( setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"$HOME/winhome/.wsl/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork & ) > /dev/null 2>&1
+fi	
+{{- end }}
 
 # Add ~/bin to PATH
 if [[ -d ${HOME}/bin ]]; then
