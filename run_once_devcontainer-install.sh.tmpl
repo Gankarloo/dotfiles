@@ -29,4 +29,16 @@ if [ ! $(command -v ble) ]; then
     # Install
     bash ble-nightly/ble.sh --install ~/.local/share
 fi
+# Eza
+if [ ! $(command -v eza) ]; then
+    # Fetch latest release download link
+    link=$(curl -sL https://api.github.com/repos/eza-community/eza/releases/latest | jq -r '.assets[] | select(.name == "eza_x86_64-unknown-linux-gnu.tar.gz").browser_download_url')
+    # Download latest
+    curl -LsSfO "$link"
+    # Unpack
+    tar xf eza_x86_64-unknown-linux-gnu.tar.gz
+    # Install
+    mv eza $HOME/.local/bin
+fi 
+    
 {{- end -}}
