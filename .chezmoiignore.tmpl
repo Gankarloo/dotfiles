@@ -9,3 +9,7 @@ install.sh
 .bashrc
 .config/blesh/
 {{- end -}}
+{{/* linux ignore */}}
+{{- if eq .chezmoi.os "linux" -}}
+Documents/
+{{- end -}}
