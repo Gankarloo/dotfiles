@@ -1,5 +1,11 @@
 LICENSE
 install.sh
+{{/* container ignore. */}}
 {{- if .remoteContainer -}}
-dot_gitconfig.tmpl
+.gitconfig
+{{- end -}}
+{{/* windows ignore */}}
+{{- if eq .osid "windows" -}}
+.bashrc
+.config/blesh/
 {{- end -}}
