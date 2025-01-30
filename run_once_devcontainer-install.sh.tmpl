@@ -1,5 +1,5 @@
 {{- if .remoteContainer -}}
-#!/bin/env bash
+#!{{ lookPath "bash" }}
 
 set -eu
 
@@ -9,7 +9,7 @@ fi
 
 # Direnv
 if [ ! $(command -v direnv) ]; then
-    bin_path='~/.local/bin' bash <(curl -LsSf https://direnv.net/install.sh)
+    bin_path="$HOME/.local/bin" bash <(curl -LsSf https://direnv.net/install.sh)
 fi
 
 # Starship
@@ -45,5 +45,4 @@ if [ ! $(command -v eza) ]; then
     # Install
     mv eza $HOME/.local/bin
 fi 
-    
-{{- end -}}
+{{ end -}}
