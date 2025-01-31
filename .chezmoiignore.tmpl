@@ -10,8 +10,10 @@ install.sh
 # Ignore on non linux os
 .bashrc
 .config/blesh/
+.vim
 {{- end -}}
 {{- if ne .osid "windows" }}
 # Ignore on non windows os
 Documents/
+vimfiles
 {{- end }}

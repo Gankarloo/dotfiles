@@ -1,0 +1,19 @@
+{
+{{ if eq .chezmoi.os "windows" -}}
+  //"sh.commandPath": "%HOMEDRIVE%%HOMEPATH%/vimfiles/coc-data/extensions/node_modules/coc-sh/node_modules/.bin/bash-language-server.cmd",
+{{- else -}}
+  //"sh.commandPath": "$HOME/.vim/coc-data/extensions/node_modules/coc-sh/node_modules/.bin/bash-language-server.cmd",
+{{- end }}
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "vimlsp.debug": false,
+  "vimlsp.trace.server": "off",
+  "coc.source.syntax.priority": 99,
+  "json.schemas": [{
+    "fileMatch": [ ".vimspector.json" ],
+    "url": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json"
+  },
+  {
+    "fileMatch": [ ".gadgets.json", ".gadgets.d/*.json" ],
+    "url": "https://puremourning.github.io/vimspector/schema/gadgets.schema.json"
+  }]
+}
