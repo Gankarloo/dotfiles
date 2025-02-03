@@ -1,6 +1,10 @@
 # General
 LICENSE
 install.sh
+{{/* ignore if not a container */}}
+{{- if .remoteContainer | not -}}
+devcontainer-install.sh
+{{- end -}}
 {{/* container ignore. */}}
 {{- if .remoteContainer -}}
 # Container
