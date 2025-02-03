@@ -47,6 +47,18 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Add ~/bin to PATH
+if [[ -d ${HOME}/bin ]]; then
+    export PATH="${HOME}/bin:${PATH}"
+fi
+
+# Brew
+HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/home/linuxbrew/.linuxbrew}"
+BREWBIN="${HOMEBREW_PREFIX}/bin/brew"
+if [[ -e $BREWBIN ]] && [[ -x $(realpath $BREWBIN) ]]; then
+    eval "$($BREWBIN shellenv)"
+fi
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -116,18 +128,6 @@ if [ $? -ne 0 ]; then
     ( setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"$HOME/winhome/.wsl/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork & ) > /dev/null 2>&1
 fi	
 {{- end }}
-
-# Add ~/bin to PATH
-if [[ -d ${HOME}/bin ]]; then
-    export PATH="${HOME}/bin:${PATH}"
-fi
-
-# Brew
-HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/home/linuxbrew/.linuxbrew}"
-BREWBIN="${HOMEBREW_PREFIX}/bin/brew"
-if [[ -e $BREWBIN ]] && [[ -x $(realpath $BREWBIN) ]]; then
-    eval "$($BREWBIN shellenv)"
-fi
 
 # Direnv
 [ "$(command -v direnv)" ] && eval "$(direnv hook bash)"
