@@ -37,6 +37,9 @@ function my/vim-load-hook {
 
 	# Unbind TAB
 	ble-bind -m 'vi_imap' -f 'TAB' ''
+
+	# Disable history completion
+	bleopt complete_auto_complete=
 }
 
 # Enable the hooks
