@@ -1,0 +1,18 @@
+# vim: filetype=neomuttrc
+
+source ./settings.neomuttrc
+source ./colors.neomuttrc
+source ./mappings.neomuttrc
+
+#powerline
+source ./powerline.neomuttrc
+
+# gruvbox colors
+#source ./gruvbox-colors.neomuttrc
+
+# vars
+set my_accounts = "~/.config/neomutt/accounts"
+set my_emails = "~/.local/share/email"
+
+# Account settings
+source $my_accounts/default.neomuttrc
