@@ -1,0 +1,8 @@
+# vim: filetype=neomuttrc
+
+# source default account
+source ./ACCOUNTNAME.neomuttrc
+
+# Set up macros to switch accounts
+
+macro index,pager <f1> '<sync-mailbox><enter-command>source ACCOUNTNAME.neomuttrc<enter><change-folder>!<enter>;<check-stats>' "switch to ACCOUNTNAME"
