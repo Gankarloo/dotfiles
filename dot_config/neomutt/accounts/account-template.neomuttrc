@@ -1,0 +1,44 @@
+# vim: filetype=neomuttrc
+
+# unset to ease account switching
+source "switch.neomuttrc"
+# lets not repeat ourselfs to much.
+set my_accountName = "EMAILADDRESS
+
+## Account settings
+set realname = "FULLNAME"
+set from = $my_accountName
+set hostname = "HOSTNAME"
+alias me FULLNAME <$my_accountName>
+set mbox_type = Maildir
+set folder = "$my_emails/$my_accountName"
+set sendmail = "msmtp -a $my_accountName"
+
+# cache settings
+set header_cache = "~/.cache/neomutt/$my_accountName/header_cache"
+set message_cachedir = "~/.cache/neomutt/$my_accountName/message_cache"
+
+
+# mailbox settings
+set spoolfile = "+INBOX"
+set postponed = "+Drafts"
+set record = "+Sent"
+set trash = "+Trash"
+
+# navigation settings
+#bind index,pager g noop
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+#macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+#macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+
+#Export vars to environment
+setenv folder "$my_accountName"
+setenv folder "$folder"
+
+# Dynamic mailboxes
+mailboxes `echo "+INBOX $(find "$folder" -type d -name cur | xargs dirname | sed -e '/INBOX/d' -e "s|$folder/|+|"  | sort | xargs)"`
+
+# synchronization settings ['s' to sync]
+#macro index S "<shell-escape>mbsync -V $my_accountName<enter>" "sync email"
+macro index o "<shell-escape>mailsync $my_accountName<enter>" "sync EMAILADDRESS"
