@@ -34,7 +34,7 @@ set attach_format = "%u%D  %T%-75.75d %?T?&   ? %5s · %m/%M"
 # |  7 	|    R    |	Your address appears in the "Reply-To:" header field but   |
 # |     |         | none of the above applies.                                 |
 # +-----+---------+------------------------------------------------------------+
-#  Default:  “ +TCFLR ”
+#  Default:   “ +TCFLR”
 #set to_chars="󰴍 "
 set to_chars="󰴍 "
 
@@ -48,8 +48,8 @@ set to_chars="󰴍 "
 # |  3  |	   %    |	Mailbox is read-only, or will not be written when exiting. |
 # |  4 	|    A    |	Folder opened in attach-message mode.                      |
 # +-----+---------+------------------------------------------------------------+
-#        Default:  “ -*%A ”
-set status_chars = " -󱫄 "
+#        Default:  “-*%A ”
+set status_chars = "-󱫄 "
 ifdef crypt_chars set crypt_chars = " "
 
 # Flag Characters
@@ -69,8 +69,8 @@ ifdef crypt_chars set crypt_chars = " "
 # |  10 |    -    | 	The mail is read - %S expando.                |
 # |  11 | <space> |   The mail is read - %Z expando.                |
 # +-----+---------+-------------------------------------------------+
-#      Default:  “ *!DdrONon-  ”
-set flag_chars = " ONon-  "
+#      Default:  “*!DdrONon- ”
+set flag_chars = "ONon- "
 
 # Hidden Tags
 # This variable specifies a list of comma-separated private notmuch/imap tags which should not be printed on screen.
