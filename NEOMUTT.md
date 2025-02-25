@@ -161,3 +161,18 @@
   | ~>( PATTERN )      |        | messages having an immediate child matching      |
   |                    |        | PATTERN , e.g. messages you replied to: ~>(~P)   |
   |--------------------|--------|--------------------------------------------------|
+
+## Working with multiple mails
+
+To apply an action to multiple mails, first tag the mails.
+```Shift-t```
+on the promt enter:
+- . for all mails
+- or any of the above patterns
+
+```;```
+and the appropriate action. 
+ex.
+- D to delete
+- S to save
+- w to change labels
