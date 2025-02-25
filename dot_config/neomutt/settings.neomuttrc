@@ -1,4 +1,4 @@
-# vim: filetype=muttrc
+# vim: filetype=neomuttrc
 set editor = "vim"
 
 set my_name = "Gustaf Ankarloo"
@@ -11,6 +11,7 @@ alternative_order text/html text/plain text/enriched text/*
 
 # main options
 
+set maildir_trash = true
 set mail_check_stats                 # Periodically check for new mail
 set envelope_from                    # Set the envelope sender of the message
 set edit_headers                     # show headers when composing
