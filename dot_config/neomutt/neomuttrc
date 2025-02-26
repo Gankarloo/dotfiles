@@ -12,7 +12,7 @@ source ./powerline.neomuttrc
 
 # vars
 set my_accounts = "~/.config/neomutt/accounts"
-set my_emails = "~/.local/share/email"
+set my_emails = "$HOME/.local/share/email"
 
 # Account settings
 source $my_accounts/default.neomuttrc
