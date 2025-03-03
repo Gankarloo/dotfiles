@@ -46,6 +46,9 @@ bind index,pager @ compose-to-sender
 bind index,pager <esc>d purge-message
 bind index <tab> sync-mailbox
 bind index <space> collapse-thread
+macro index g1 '<enter-command>set index_format=" %zs %zc %zt %{!%d/%b %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <enter>' "Normal format"
+macro index g2 '<enter-command>set index_format=" %zs %zc %zt %{!%d/%b/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <enter>' "Show Year in format"
+macro index g3 '<enter-command>set index_format=" %zs %zc %zt %b %{!%d/%b/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <return>' "Show mailbox in format"
 
 # Email completion bindings
 bind editor <Tab> complete-query

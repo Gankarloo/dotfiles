@@ -13,6 +13,7 @@ source ./powerline.neomuttrc
 # vars
 set my_accounts = "~/.config/neomutt/accounts"
 set my_emails = "$HOME/.local/share/email"
+set my_indexformat = " %zs %zc %zt %{%d/%m/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s"
 
 # Account settings
 source $my_accounts/default.neomuttrc
