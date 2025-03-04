@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+set -x
+grep=/bin/grep
+
+#basePath="$HOME/.cache/neomutt/convert"
+basePath="/tmp/neomutt-multipart"
+commandsFile="${basePath}/commands"
+markdownFile="${basePath}/markdown"
+htmlFile="${basePath}/neomutt.html"
+#tmplFile="${basePath}/tmpl.html"
+tmplFile="bootstrap.html5"
+
+# create tmp path
+mkdir -p "$basePath"
+
+cat - > "$markdownFile"
+echo -n "push " > "$commandsFile"
+
+convertHTML() {
+    pandoc -f markdown -t html5 --output "$htmlFile" --embed-resources --standalone --template "$tmplFile" "$markdownFile"
+}
+
+attachHTML() {
+    {
+        # Attach the html file
+        echo -n "<attach-file>\"$htmlFile\"<enter>" 
+        # Set it as inline
+        echo -n "<toggle-disposition>" 
+        # Tell neomutt to delete it after sending
+        echo -n "<toggle-unlink>" 
+        renameAttachement
+    } >> "$commandsFile"
+}
+replaceImgPath(){
+    # Loop over all images, replace the image path with a uniq id (a simple md5sum of the imageFile)
+    "${grep}" -Eo '!\[[^]]*\]\([^)]+' "$markdownFile" | cut -d '(' -f 2 |
+        "${grep}" -Ev '^(cid:|https?://)' | while read -r file; do
+            id="cid:$(md5sum "$file" | cut -d ' ' -f 1 )"
+            sed -i "s#$file#$id#g" "$markdownFile"
+        done
+}
+replaceMarkdown(){
+    # Replace the Original attached markdownFile with the new updated version.
+    if [ "$("${grep}" -Eo '!\[[^]]*\]\([^)]+' "$markdownFile" | "${grep}" 'cid:' | wc -l)" -gt 0 ]; then
+        {
+            # Attach file
+            echo -n "<attach-file>\"$markdownFile\"<enter>"
+            # Set it as inline
+            echo -n "<toggle-disposition>"
+            echo -n "<first-entry>"
+            # Tell neomutt to delete it after sending
+            echo -n "<toggle-unlink>" 
+        } >> "$commandsFile"
+    fi
+}
+attachImgs(){
+    # Loop over all images in the original markdownFile, and attach the images using the same uniq id as image name.
+    "${grep}" -Eo '!\[[^]]*\]\([^)]+' "${markdownFile}.orig" | cut -d '(' -f 2 |
+        "${grep}" -Ev '^(cid:|https?://)' | while read -r file; do
+        id="$(md5sum "$file" | cut -d ' ' -f 1 )"
+        {
+            # Attach file
+            echo -n "<attach-file>\"$file\"<enter>" 
+            # Set it as inline
+            echo -n "<toggle-disposition>" 
+            # change attach file name
+            echo -n "<edit-content-id>^u\"$id\"<enter>" 
+            echo -n "<tag-entry>" 
+            renameAttachement
+        } >> "$commandsFile"
+    done
+}
+groupAttchements(){
+    if [ "$("${grep}" -Eo '!\[[^]]*\]\([^)]+' "$markdownFile" | "${grep}" 'cid:' | wc -l)" -gt 0 ]; then
+        {
+            echo -n "<first-entry>"
+            echo -n "<tag-entry>"
+            echo -n "<group-related>" 
+        } >> "$commandsFile"
+    fi
+}
+groupAlternatives(){
+    {
+        # Select both the html and markdown files
+        echo -n "<tag-entry>"
+        echo -n "<previous-entry>"
+        echo -n "<tag-entry>" 
+
+        # Group the selected messages as alternatives
+        echo -n "<group-alternatives>"
+    } >> "$commandsFile"
+}
+renameAttachement(){
+    {
+        echo -n "<rename-attachment><enter>"
+    } >> "$commandsFile"
+}
+#set -x
+# Check if there are any images in the markdown.
+if [ "$("${grep}" -Eo '!\[[^]]*\]\([^)]+' "$markdownFile" | wc -l)" -gt 0 ]; then
+    # Create a copy of the markdownFile
+    cp "$markdownFile" "${markdownFile}.orig"
+
+    renameAttachement
+    #echo "---replaceImgPath---" >> "$commandsFile"
+    replaceImgPath
+    #echo "---replaceMarkdown---" >> "$commandsFile"
+    #replaceMarkdown
+    #echo "---convertHTML---" >> "$commandsFile"
+    convertHTML
+    #echo "---attachHTML---" >> "$commandsFile"
+    attachHTML
+    #echo "---groupAlternatives---" >> "$commandsFile"
+    groupAlternatives
+    #echo "---attachImgs---" >> "$commandsFile"
+    attachImgs
+    #echo "---groupAttchements---" >> "$commandsFile"
+    groupAttchements
+else
+    convertHTML
+    attachHTML
+    groupAlternatives
+fi
+#set +x

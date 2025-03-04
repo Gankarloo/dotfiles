@@ -67,5 +67,5 @@ macro index,pager A \
 # Compose
 macro compose Y "<first-entry> \
     <pipe-entry>convert-multipart<enter> \
-    <enter-command>source $HOME/.cache/neomutt/convert/commands<enter>"
+    <enter-command>source /tmp/neomutt-multipart/commands<enter>"
 

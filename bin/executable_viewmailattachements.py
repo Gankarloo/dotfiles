@@ -493,7 +493,6 @@ class mysubprocess:
 
 if __name__ == '__main__':
     import tempfile
-    #tmpdir = tempfile.mkdtemp(None,None,os.getenv("HOME")+"/.cache/neomutt/convert/tmp")
     tmpdir = tempfile.mkdtemp()
     if len(sys.argv) > 1:
         for f in sys.argv[1:]:
