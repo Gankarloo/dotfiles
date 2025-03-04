@@ -1,0 +1,18 @@
+# vim: filetype=neomuttrc
+
+# This variable specifies the default Notmuch database
+set nm_default_url = "notmuch://$my_emails"
+# When writing a message in the NeoMutt record (see $record in the NeoMutt docs),
+# also add it to the notmuch DB. Replies inherit the tags from the original email.
+set nm_record = yes
+
+# Tags modifications to the messages stored in the NeoMutt record.
+set nm_record_tags = "inbox,sent,me,read"
+
+# This variable specifies the notmuch tag used for unread messages.
+set nm_unread_tag = unread
+
+#set nm_query_window_enable=yes
+#set nm_query_window_duration=2
+#set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
+#set nm_query_window_or_terms="tag:unread and tag:flagged"
