@@ -13,6 +13,9 @@ function my/complete-load-hook {
 
 	# sabbrev
 	ble-sabbrev -w cm=chezmoi
+	ble-sabbrev -w cma="chezmoi add"
+	ble-sabbrev -w cmra="chezmoi re-add"
+	ble-sabbrev -w cms="chezmoi status"
 	ble-sabbrev "~local=$HOME/.local"
 }
 
