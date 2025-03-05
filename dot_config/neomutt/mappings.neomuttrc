@@ -49,11 +49,11 @@ bind index <space> collapse-thread
 macro index g1 '<enter-command>set index_format=" %zs %zc %zt %{!%d/%b %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <enter>' "Normal format"
 macro index g2 '<enter-command>set index_format=" %zs %zc %zt %{!%d/%b/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <enter>' "Show Year in format"
 macro index g3 '<enter-command>set index_format=" %zs %zc %zt %b %{!%d/%b/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s" <return>' "Show mailbox in format"
-macro index,pager <F9> \
-    "<enter-command>unset wait_key<enter> \
-    <copy-message>/tmp/viewhtmlmail/<enter>y \
-    <shell-escape>~/bin/viewhtmlmail.py /tmp/viewhtmlmail/ \
-    <enter-command>set wait_key<enter>" "View HTML in browser"
+macro index,pager <F9> " \
+    <enter-command>unset wait_key pipe_decode<enter> \
+    <pipe-message>viewhtmlmail.py<enter> \
+    <enter-command>set wait_key pipe_decode<enter> \
+    " "View HTML in browser"
 
 # Email completion bindings
 bind editor <Tab> complete-query

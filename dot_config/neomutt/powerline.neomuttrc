@@ -10,7 +10,8 @@ set index_format= " %zs %zc %zt %{%d/%m/%y %H:%M} . %-28.28L  %?M?(%1M)&  ? %?X?
 set pager_format=" %n %zc  %T %s%*  %{!%d %b · %H:%M} %?X?  %X ? %P 󰴍 "
 set status_format = " %f%?r? %r?   %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?   %p ?"
 set vfolder_format = " %N %?n?%3n&   ?  %8m  · %f"
-set attach_format = "%u%D  %T%-75.75d %?T?&   ? %5s · %m/%M"
+set attach_format = "%u%D%I %t%4n  %T%-75.75d %?T?&   ? %5s · %m/%M · %.6e%<C?, %C>"
+#set attach_format = "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] "
 
 # To Characters
 # Controls the character used to indicate mail addressed to you
