@@ -34,7 +34,6 @@ function my/vim-load-hook {
 	bleopt filename_ls_colors="$LS_COLORS"
 
 	# Bind "C-x C-v" for 
-	VISUAL='vim -X'
 	ble-bind -m vi_imap -f 'C-x C-v' 'edit-and-execute-command'
 	ble-bind -m vi_nmap -f 'C-x C-v' 'vi-command/edit-and-execute-command'
 
