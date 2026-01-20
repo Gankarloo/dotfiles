@@ -5,7 +5,7 @@ case $- in
 esac
 
 # Source ble.sh if installed
-if [ -f ~/.local/share/blesh/ble.sh ]; then
+if [ -f ~/.local/share/blesh/ble.sh ] && [ "$IS_COPILOT_AGENT" != "true" ]; then
     # ble.sh @ Top of file
     HAS_BLESH=1
     [[ $- == *i* ]] && source ~/.local/share/blesh/ble.sh --noattach
